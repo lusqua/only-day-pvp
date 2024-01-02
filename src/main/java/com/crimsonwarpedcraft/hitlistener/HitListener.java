@@ -62,16 +62,6 @@ public class HitListener extends JavaPlugin implements Listener {
     }
 
     @EventHandler
-    public void onBlockBreak(BlockBreakEvent event) {
-        /*
-         * We get the player and make a variable to make it easier to access it when we
-         * need to use it.
-         */
-        Player p = event.getPlayer();
-        p.sendMessage("quebrou");
-    }
-
-    @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
         if(!TitleManager.nightTitleShown) {
             TitleManager.showNightTitleToAll(pvp.pvpEnabled);
