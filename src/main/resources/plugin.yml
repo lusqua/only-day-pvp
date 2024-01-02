@@ -1,9 +1,10 @@
-main: ${PACKAGE}.${NAME}
-name: ${NAME}
+main: com.crimsonwarpedcraft.hitlistener.HitListener
+name: OnlyNightPvP
 version: "${VERSION}"
-api-version: "1.16"
+api-version: "1.20"
 author: lusqua
 description: legal
+folia-supported: true
 commands:
   ex:
     description: Base command for EXAMPLE

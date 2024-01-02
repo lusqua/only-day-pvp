@@ -1,12 +1,28 @@
 package com.crimsonwarpedcraft.hitlistener;
 
+import io.papermc.lib.PaperLib;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.plugin.java.JavaPlugin;
 
-public class HitListener implements Listener {
+public class HitListener extends JavaPlugin implements Listener {
+
+
+    @Override
+    public void onEnable() {
+        PaperLib.suggestPaper(this);
+
+        saveDefaultConfig();
+
+        // Registra o listener
+        getServer().getPluginManager().registerEvents(this, this);
+    }
+
+
 
     /**
      * Verifica se o PvP é permitido durante a noite.
@@ -26,9 +42,15 @@ public class HitListener implements Listener {
      */
     @EventHandler
     public void onEntityDamage(EntityDamageByEntityEvent event) {
+        Player attacker = (Player) event.getDamager();
+
+        attacker.sendMessage("Bateu");
+
         if (event.getDamager() instanceof Player && event.getEntity() instanceof Player) {
-            Player attacker = (Player) event.getDamager();
+
             Player victim = (Player) event.getEntity();
+
+            victim.sendMessage("tomasse");
 
             if (isPvPAllowed(attacker.getWorld())) {
                 // PvP é permitido
@@ -40,4 +62,15 @@ public class HitListener implements Listener {
             }
         }
     }
+
+    @EventHandler
+    public void onBlockBreak(BlockBreakEvent event) {
+        /*
+         * We get the player and make a variable to make it easier to access it when we
+         * need to use it.
+         */
+        Player p = event.getPlayer();
+        p.sendMessage("quebrou");
+    }
+
 }
