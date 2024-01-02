@@ -1,6 +1,8 @@
 package com.crimsonwarpedcraft.hitlistener;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -50,14 +52,19 @@ public class TitleManager {
 
             // Verify if is day ( 0 and 13000)
             if (time >= 0 && time <= 13000) {
+
+                Component title = Component.text("Bom dia!")
+                        .color(NamedTextColor.BLUE);
+
+                Component subtitle = Component.text("O PvP está desabilitado!")
+                        .color(NamedTextColor.GREEN);
+
+
                 // Create a title with the text and subtitle
-                Title title = Title.title(
-                        Component.text("Bom Dia!"),
-                        Component.text("O PvP está desabilitado!"));
 
                 // Show the title to all players
                 for (Player player : Bukkit.getOnlinePlayers()) {
-                    player.showTitle(title);
+                    player.showTitle(Title.title(title, subtitle));
                 }
 
                 // Set the nightTitleShown to false
@@ -68,8 +75,13 @@ public class TitleManager {
 
     public static Title pvpTitle() {
 
-        return Title.title(
-                Component.text("Cuidado!"),
-                Component.text("O PvP está habilitado!"));
+        Component title = Component.text("Cuidado!")
+                .color(NamedTextColor.RED)
+                .decorate(TextDecoration.BOLD);
+
+        Component subtitle = Component.text("O PvP está habilitado!")
+                .color(NamedTextColor.RED);
+
+        return Title.title(title, subtitle);
     }
 }
