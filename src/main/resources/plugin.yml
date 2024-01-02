@@ -6,15 +6,14 @@ author: lusqua
 description: legal
 folia-supported: true
 commands:
-  ex:
-    description: Base command for EXAMPLE
-    usage: "For a list of commands, type /ex help"
-    aliases: example
-permissions:
-  example.test:
-    description: DESCRIPTION
-    default: true
-  example.*:
-    description: Grants all other permissions
-    default: false
-    children:
+  pvpEnable:
+    description: Ativa ou desativa o PvP
+    usage: /pvpEnable
+#permissions:
+#  example.test:
+#    description: DESCRIPTION
+#    default: true
+#  example.*:
+#    description: Grants all other permissions
+#    default: false
+#    children:

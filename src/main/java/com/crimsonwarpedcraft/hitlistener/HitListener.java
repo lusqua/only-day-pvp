@@ -7,16 +7,23 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class HitListener extends JavaPlugin implements Listener {
 
+    public EnablePvp pvp;
 
     @Override
     public void onEnable() {
         PaperLib.suggestPaper(this);
 
         saveDefaultConfig();
+
+        this.pvp = new EnablePvp();
+
+        getCommand("pvpEnable").setExecutor(pvp);
 
         // Registra o listener
         getServer().getPluginManager().registerEvents(this, this);
@@ -32,7 +39,7 @@ public class HitListener extends JavaPlugin implements Listener {
      */
     private boolean isPvPAllowed(World world) {
         long time = world.getTime();
-        return time >= 13000 && time <= 23000; // Entre 6:30 PM e 11:30 PM
+        return (time >= 13000 && time <= 23000) || pvp.pvpEnabled; // Entre 6:30 PM e 11:30 PM
     }
 
     /**
@@ -48,17 +55,8 @@ public class HitListener extends JavaPlugin implements Listener {
 
         if (event.getDamager() instanceof Player && event.getEntity() instanceof Player) {
 
-            Player victim = (Player) event.getEntity();
-
-            victim.sendMessage("tomasse");
-
-            if (isPvPAllowed(attacker.getWorld())) {
-                // PvP é permitido
-                attacker.sendMessage("PvP é permitido à noite!");
-            } else {
-                // PvP não é permitido
+            if (!isPvPAllowed(attacker.getWorld())) {
                 event.setCancelled(true);
-                attacker.sendMessage("PvP não é permitido durante o dia!");
             }
         }
     }
@@ -71,6 +69,21 @@ public class HitListener extends JavaPlugin implements Listener {
          */
         Player p = event.getPlayer();
         p.sendMessage("quebrou");
+    }
+
+    @EventHandler
+    public void onPlayerMove(PlayerMoveEvent event) {
+        if(!TitleManager.nightTitleShown) {
+            TitleManager.showNightTitleToAll(pvp.pvpEnabled);
+        } else {
+            TitleManager.showDayTitleToAll(pvp.pvpEnabled);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        Player currentPlayer = event.getPlayer();
+        TitleManager.showNightTitle(currentPlayer);
     }
 
 }
