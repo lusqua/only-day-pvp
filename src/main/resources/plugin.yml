@@ -2,8 +2,8 @@ main: ${PACKAGE}.${NAME}
 name: ${NAME}
 version: "${VERSION}"
 api-version: "1.16"
-author: AUTHOR
-description: DESCRIPTION
+author: lusqua
+description: legal
 commands:
   ex:
     description: Base command for EXAMPLE
@@ -17,4 +17,3 @@ permissions:
     description: Grants all other permissions
     default: false
     children:
-      example.test: true
