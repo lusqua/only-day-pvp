@@ -49,11 +49,9 @@ public class HitListener extends JavaPlugin implements Listener {
      */
     @EventHandler
     public void onEntityDamage(EntityDamageByEntityEvent event) {
-        Player attacker = (Player) event.getDamager();
-
-        attacker.sendMessage("Bateu");
-
         if (event.getDamager() instanceof Player && event.getEntity() instanceof Player) {
+            Player attacker = (Player) event.getDamager();
+
 
             if (!isPvPAllowed(attacker.getWorld())) {
                 event.setCancelled(true);
@@ -63,12 +61,23 @@ public class HitListener extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
-        if(!TitleManager.nightTitleShown) {
-            TitleManager.showNightTitleToAll(pvp.pvpEnabled);
-        } else {
-            TitleManager.showDayTitleToAll(pvp.pvpEnabled);
+        // Check if the event has a valid location
+        if (event.getTo() != null) {
+            // Get the world from the destination location
+            World world = event.getTo().getWorld();
+
+            // Check if the world is the overworld
+            if (world.getEnvironment() == World.Environment.NORMAL) {
+                if (!TitleManager.nightTitleShown) {
+                    TitleManager.showNightTitleToAll(pvp.pvpEnabled);
+                } else {
+                    TitleManager.showDayTitleToAll(pvp.pvpEnabled);
+                }
+            }
+            // If it's not the overworld, you can choose to handle it differently or do nothing
         }
     }
+
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
